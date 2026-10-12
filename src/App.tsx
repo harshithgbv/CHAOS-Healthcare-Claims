@@ -98,6 +98,18 @@ export default function App() {
             hover:file:bg-teal-400"
         />
 
+        <a
+          href={`data:text/csv;charset=utf-8,${encodeURIComponent(
+            'id,patientId,providerId,procedureCode,serviceDate,amount\n' +
+            'DEMO001,PAT001,PROV001,PROC101,2026-10-01,150\n' +
+            'DEMO002,PAT002,PROV002,PROC205,2026-10-02,275\n',
+          )}`}
+          download="chaos-claims-template.csv"
+          className="mt-3 inline-block text-sm font-semibold text-teal-300 underline hover:text-teal-200"
+        >
+          Download CSV Template
+        </a>
+
         {error && (
           <p role="alert" className="mt-4 text-sm text-red-400">
             {error}

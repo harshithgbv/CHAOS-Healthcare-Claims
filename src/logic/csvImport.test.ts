@@ -82,4 +82,31 @@ function csvRow(
   );
 }
 
-console.log('CSV import tests passed: 6 test groups.');
+ // 7. An invalid row must not reserve its claim ID.
+{
+  const result = parseClaimsCsv(
+    [
+      headers,
+      'C009,,PR200,PROC-001,2026-10-01,150',
+      csvRow('C009'),
+    ].join('\n'),
+  );
+
+  assert.equal(result.claims.length, 1);
+  assert.equal(result.rejectedRows.length, 1);
+  assert.equal(result.claims[0].id, 'C009');
+  assert.match(result.rejectedRows[0].reason, /Missing patient ID/);
+}
+
+// 8. Malformed CSV must produce a clear error.
+{
+  const malformedCsv =
+    `${headers}\n"C010,P100,PR200,PROC-001,2026-10-01,150`;
+
+  assert.throws(
+    () => parseClaimsCsv(malformedCsv),
+    /Malformed CSV/,
+  );
+}
+
+console.log('CSV import tests passed: 8 test groups.');
