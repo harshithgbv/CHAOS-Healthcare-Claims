@@ -20,6 +20,8 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(vite.middlewares);
 }
 
-app.listen(3000, () => {
-  console.log('Server listening on port 3000');
+const PORT = Number(process.env.PORT) || 3001;
+
+app.listen(PORT, () => {
+  console.log(`CHAOS server listening on port ${PORT}`);
 });
