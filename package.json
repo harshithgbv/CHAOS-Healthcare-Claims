@@ -10,7 +10,7 @@
     "start": "tsx server.ts",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "test": "tsx src/logic/detector.test.ts && tsx src/logic/evaluation.test.ts && tsx src/logic/edgeCases.test.ts && tsx src/logic/ruleInteractions.test.ts && tsx src/logic/robustness.test.ts",
+    "test": "tsx src/logic/detector.test.ts && tsx src/logic/evaluation.test.ts && tsx src/logic/edgeCases.test.ts && tsx src/logic/ruleInteractions.test.ts && tsx src/logic/robustness.test.ts && tsx src/logic/csvImport.test.ts",
     "test:edge": "tsx src/logic/edgeCases.test.ts",
     "test:interactions": "tsx src/logic/ruleInteractions.test.ts"
   },
@@ -22,6 +22,7 @@
     "express": "^4.21.2",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
+    "papaparse": "^5.7.0",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "tsx": "^4.23.15",
