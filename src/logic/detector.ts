@@ -26,11 +26,43 @@ const isValidServiceDate = (value: string): boolean => {
 };
 
 export const analyzeClaims = (claims: Claim[]): Claim[] => {
-  return claims.map((claim) => {
+  return claims.map((claim, claimIndex) => {
     const flags: Flag[] = [];
     let priorityScore = 0;
+const duplicateIdExists = claims.some(
+  (other, otherIndex) =>
+    otherIndex !== claimIndex && other.id === claim.id
+);
 
+if (duplicateIdExists) {
+  flags.push({
+    rule: 'Data Quality',
+    description: `Duplicate claim ID: ${claim.id}`,
+    severity: 'high',
+  });
+  priorityScore += 40;
+}
     const validAmount = Number.isFinite(claim.amount) && claim.amount > 0;
+
+    // Data quality: missing patient ID
+    if (!claim.patientId?.trim()) {
+      flags.push({
+        rule: 'Data Quality',
+        description: 'Missing patient ID',
+        severity: 'high',
+      });
+      priorityScore += 40;
+    }
+
+    // Data quality: missing provider ID
+    if (!claim.providerId?.trim()) {
+      flags.push({
+        rule: 'Data Quality',
+        description: 'Missing provider ID',
+        severity: 'high',
+      });
+      priorityScore += 40;
+    }
 
     // Data quality checks
     if (!claim.procedureCode?.trim()) {
@@ -64,8 +96,8 @@ export const analyzeClaims = (claims: Claim[]): Claim[] => {
     // The claim being assessed must not inflate its own baseline.
     if (claim.procedureCode && validAmount) {
       const comparisonClaims = claims.filter(
-        (other) =>
-          other.id !== claim.id &&
+  (other, otherIndex) =>
+          otherIndex !== claimIndex &&
           other.procedureCode === claim.procedureCode &&
           Number.isFinite(other.amount) &&
           other.amount > 0
@@ -86,15 +118,24 @@ export const analyzeClaims = (claims: Claim[]): Claim[] => {
         }
       }
     }
-
     // Duplicate candidate detection
-    const matchingClaims = claims.filter(
-      (other) =>
-        other.id !== claim.id &&
-        other.patientId === claim.patientId &&
-        other.providerId === claim.providerId &&
-        other.serviceDate === claim.serviceDate
-    );
+    // Do not match claims when patient or provider identifiers are missing.
+    const hasValidIdentifiers =
+      Boolean(claim.patientId?.trim()) &&
+      Boolean(claim.providerId?.trim());
+
+    const matchingClaims = hasValidIdentifiers
+      ? claims.filter(
+          (other, otherIndex) =>
+            otherIndex !== claimIndex &&
+            Boolean(other.patientId?.trim()) &&
+            Boolean(other.providerId?.trim()) &&
+            other.patientId === claim.patientId &&
+            other.providerId === claim.providerId &&
+            other.serviceDate === claim.serviceDate
+        )
+      : [];
+
 
     const exactDuplicates = matchingClaims.filter(
       (other) =>
@@ -127,6 +168,7 @@ export const analyzeClaims = (claims: Claim[]): Claim[] => {
       });
       priorityScore += 40;
     }
+
 
     return {
       ...claim,

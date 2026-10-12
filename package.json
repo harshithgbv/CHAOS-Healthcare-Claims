@@ -10,7 +10,9 @@
     "start": "tsx server.ts",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "test": "tsx src/logic/detector.test.ts"
+    "test": "tsx src/logic/detector.test.ts && tsx src/logic/evaluation.test.ts && tsx src/logic/edgeCases.test.ts && tsx src/logic/ruleInteractions.test.ts && tsx src/logic/robustness.test.ts",
+    "test:edge": "tsx src/logic/edgeCases.test.ts",
+    "test:interactions": "tsx src/logic/ruleInteractions.test.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
