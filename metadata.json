@@ -1,0 +1,6 @@
+{
+  "name": "CHAOS — Claims Handling Anomaly Optimization Squad",
+  "description": "Healthcare claims anomaly detection and management platform.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

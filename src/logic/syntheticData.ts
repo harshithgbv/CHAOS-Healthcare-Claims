@@ -1,0 +1,48 @@
+import { Claim } from './types';
+
+export const syntheticClaims: Claim[] = [
+  {
+    id: 'C001',
+    patientId: 'P100',
+    providerId: 'PR200',
+    procedureCode: 'PROC-001',
+    serviceDate: '2026-10-01',
+    amount: 150.00,
+    status: 'Pending',
+    flags: [],
+    priorityScore: 0,
+  },
+  {
+    id: 'C002',
+    patientId: 'P100',
+    providerId: 'PR200',
+    procedureCode: 'PROC-001',
+    serviceDate: '2026-10-01',
+    amount: 150.00,
+    status: 'Pending',
+    flags: [],
+    priorityScore: 0,
+  },
+  {
+    id: 'C003',
+    patientId: 'P101',
+    providerId: 'PR201',
+    procedureCode: 'PROC-002',
+    serviceDate: '2026-10-05',
+    amount: 5000.00,
+    status: 'Pending',
+    flags: [],
+    priorityScore: 0,
+  },
+  {
+    id: 'C004',
+    patientId: 'P102',
+    providerId: 'PR202',
+    procedureCode: '',
+    serviceDate: '2026-10-06',
+    amount: -50.00,
+    status: 'Pending',
+    flags: [],
+    priorityScore: 0,
+  },
+];
